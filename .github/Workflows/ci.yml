@@ -1,18 +1,30 @@
-name: Solution-Task-2-Push
+name: Foody
+
 on:
   push:
-   branches: ["master"]
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
-  build-test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
-        run: dotnet build
+        run: dotnet build --no-restore
+
       - name: Test
-        run: dotnet test
+        run: dotnet test --no-build --verbosity normal
